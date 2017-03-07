@@ -26,9 +26,9 @@ TicTacToeBoard::TicTacToeBoard()
     for(int j=0; j<=2; j++)
     {
       this->board[i][j] = Blank;
-      this->turn = X;
     }
   } 
+  this->turn = X;
 }
 
 //Resets each board location to the Blank Piece value
@@ -54,6 +54,7 @@ Piece TicTacToeBoard::placePiece(int row, int column)
 {
   if(row > 2 || row < 0 || column > 2 || column < 0)
   {
+    toggleTurn();
     return Invalid;
   } 
   if(getPiece(row,column) == Blank)
@@ -64,6 +65,7 @@ Piece TicTacToeBoard::placePiece(int row, int column)
     return temp; 
   }
   else
+    toggleTurn();
     return getPiece(row,column);
 }
 
@@ -84,5 +86,55 @@ Piece TicTacToeBoard::getPiece(int row, int column)
 **/
 Piece TicTacToeBoard::getWinner()
 {
-  return Invalid;
+  for(int i=0; i<=2; i++)
+  {
+    if(getPiece(i,0) != Blank)
+    {
+      if((getPiece(i,0) == getPiece(i,1)) && (getPiece(i,1) == getPiece(i,2)))
+      {
+        return getPiece(i,0);
+      }
+    }
+  } 
+  for(int j=0; j<=2; j++)
+  {
+    if(getPiece(0,j)  != Blank)
+    {
+      if((getPiece(0,j) == getPiece(1,j)) && (getPiece(1,j) == getPiece(2,j)))
+      {
+        return getPiece(0,j);
+      }
+    }
+  }
+  if(getPiece(1,1) != Blank)
+  {
+    if((getPiece(0,0) == getPiece(1,1)) && (getPiece(1,1) == getPiece(2,2)))
+    {
+      return getPiece(1,1);
+    }
+    if((getPiece(0,2) == getPiece(1,1)) && (getPiece(1,1) == getPiece(2,0)))
+    {
+      return getPiece(1,1);
+    }
+  }
+
+  bool end_check = true;
+  for(int i=0; i<=2; i++)
+  {
+    for(int j=0; j<=2; j++)
+    {
+      if(getPiece(i,j) == Blank)
+      {
+        end_check = false;
+      }
+    }
+  }
+  if(end_check == false)
+  {
+    return Invalid;
+  }
+  else
+  {
+    return Blank;
+  }
 }
